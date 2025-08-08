@@ -1,0 +1,29 @@
+local Players = game:GetService("Players")
+local localPlayer = Players.LocalPlayer
+
+local function equipToolAndClick()
+	local tool
+	local backpack = localPlayer:WaitForChild("Backpack")
+	for _, item in pairs(backpack:GetChildren()) do
+		if item:IsA("Tool") then
+			localPlayer.Character.Humanoid:EquipTool(item)
+			tool = item
+			break
+		end
+	end
+	if tool then
+		spawn(function()
+			while tool.Parent == localPlayer.Character do
+				tool:Activate()
+				task.wait(0.3)
+			end
+		end)
+	end
+end
+
+localPlayer.CharacterAdded:Connect(function()
+	task.wait(1)
+	equipToolAndClick()
+end)
+
+equipToolAndClick()
